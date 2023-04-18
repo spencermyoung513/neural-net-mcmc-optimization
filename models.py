@@ -14,7 +14,7 @@ class LinearLayer:
         self.b = b
         return self
     
-class two_model:
+class TwoLayerNN:
     """A two layer neural network with Relu Activation"""
     def __init__(self, w1, b1, w2, b2):
         if w1 is None:
