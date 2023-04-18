@@ -4,7 +4,6 @@ from sklearn.metrics import log_loss
 def softmax(xs):
     return np.exp(xs)/(np.sum(np.exp(xs)))
     
-#Define loss function
 def loss(nn,w1,b1,w2,b2,xs,ys):
     pred_probs = []
     N = len(ys)
