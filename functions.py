@@ -1,11 +1,18 @@
 import numpy as np
 from sklearn.metrics import log_loss
 
-def softmax(xs,temperature=1e3):
+def softmax(xs):
     if len(xs.shape) == 1: #Increase dimension to fit below for 1 dimension arrays
         xs = np.expand_dims(xs,0)
     norm_fact = np.max(xs)
-    temperature = norm_fact   #I'm not sure if this is the best way? Should I do it individually for each set of probabilities?
+    temperature = norm_fact
+    return np.exp(xs/temperature)/(np.sum(np.exp(xs/temperature),axis=1).reshape(-1,1))
+
+def softmax2(xs):
+    if len(xs.shape) == 1: #Increase dimension to fit below for 1 dimension arrays
+        xs = np.expand_dims(xs,0)
+    norm_fact = np.amax(np.abs(xs),axis=1)
+    temperature = norm_fact.reshape(-1,1)
     return np.exp(xs/temperature)/(np.sum(np.exp(xs/temperature),axis=1).reshape(-1,1))
     
 def cross_entropy_loss(targets,preds):

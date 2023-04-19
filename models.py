@@ -1,5 +1,5 @@
 import numpy as np
-from functions import softmax
+from functions import softmax,softmax2
 class LinearLayer:
     """A one-layer linear network with no activation."""
     def __init__(self, w, b):
@@ -23,7 +23,7 @@ class TwoLayerNN:
         self.b2 = b2
 
     def forward(self,x):
-        return softmax((self.w2 @ np.maximum((self.w1 @ x.T).T + self.b1, 0).T).T + self.b2)
+        return softmax2((self.w2 @ np.maximum((self.w1 @ x.T).T + self.b1, 0).T).T + self.b2)
 
     def update_weights(self, w1, b1, w2, b2):
         self.w1 = w1
