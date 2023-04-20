@@ -2,7 +2,7 @@ import numpy as np
 from typing import Tuple, Dict
 
 def optimize_via_mcmc(model, initial_params, data_sampler, proposal_generator, loss_function,
-                      beta: float = 0.5, num_iterations: int = 5000, batch_size: int = 25) -> Tuple[Dict, Dict]:
+                      beta: float = 0.5, num_iterations: int = 5000, batch_size: int = 25,regularize: bool = False, alpha: float = 2) -> Tuple[Dict, Dict]:
     """Use MCMC sampling to sample from likely optimizers of a loss surface.
     
     Args:
@@ -39,8 +39,15 @@ def optimize_via_mcmc(model, initial_params, data_sampler, proposal_generator, l
         current_model_preds = current_model.forward(X_sample)
 
         # Compute loss on batch of proposed and current model.
-        proposal_loss = loss_function(y_sample, proposed_model_preds)
-        current_loss = loss_function(y_sample, current_model_preds)
+        if regularize:
+            proposal_loss = loss_function(y_sample,proposed_model_preds)\
+            +alpha*(np.linalg.norm(proposed_model.w1)+np.linalg.norm(proposed_model.w2))
+            current_loss = loss_function(y_sample,current_model_preds)\
+            +alpha*(np.linalg.norm(current_model.w1)+np.linalg.norm(current_model.w2))
+        else:
+            proposal_loss = loss_function(y_sample, proposed_model_preds)
+            current_loss = loss_function(y_sample, current_model_preds)
+            
 
         # Decide whether/not to accept the proposal.
 
