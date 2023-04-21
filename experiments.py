@@ -35,7 +35,7 @@ def run_mcmc_optimization_on_mnist(model, initial_model_params: dict, mcmc_param
 
     test_accuracies = []
     training_times = []
-    histories = []
+    loss_histories = []
     best_found_params = None
     best_test_accuracy = 0
 
@@ -65,7 +65,7 @@ def run_mcmc_optimization_on_mnist(model, initial_model_params: dict, mcmc_param
 
         test_accuracies.append(test_accuracy)
         training_times.append(time_elapsed)
-        histories.append(history)
+        loss_histories.append(history['loss_values'])
 
         if test_accuracy > best_test_accuracy:
             best_found_params = best_params
@@ -74,7 +74,7 @@ def run_mcmc_optimization_on_mnist(model, initial_model_params: dict, mcmc_param
     results = {
         'test_accuracies': test_accuracies,
         'training_times': training_times,
-        'histories': histories,
+        'loss_histories': loss_histories,
         'best_found_params': best_found_params,
     }
 
@@ -96,10 +96,10 @@ if __name__ == "__main__":
     b2 = np.random.normal(loc=0, scale=1.0, size=final_size)
 
     initial_model_params = {'w1': w1, 'b1': b1, 'w2': w2, 'b2': b2}
-    mcmc_params = {'beta': 100, 'num_iterations': 20000, 'batch_size': 50}
+    mcmc_params = {'beta': 95, 'num_iterations': 10000, 'batch_size': 64}
 
-    gibbs_proposal_generator = TwoLayerNNGibbsProposalGenerator(pct_entries_to_change=0.1, scale=5, decay=1-1e-7)
+    gibbs_proposal_generator = TwoLayerNNGibbsProposalGenerator(pct_entries_to_change=0.2, scale=1, decay=1-1e-7)
     gaussian_proposal_generator = TwoLayerNNGaussianProposalGenerator(scale=5, decay=1-1e-7)
 
-    run_mcmc_optimization_on_mnist(TwoLayerNN, initial_model_params, mcmc_params, gibbs_proposal_generator, num_trials=10, save_path='nn_gibbs_results.pkl')
-    run_mcmc_optimization_on_mnist(TwoLayerNN, initial_model_params, mcmc_params, gaussian_proposal_generator, num_trials=10, save_path='nn_gaussian_results.pkl')
+    run_mcmc_optimization_on_mnist(TwoLayerNN, initial_model_params, mcmc_params, gibbs_proposal_generator, num_trials=20, save_path='results/nn_gibbs_results.pkl')
+    run_mcmc_optimization_on_mnist(TwoLayerNN, initial_model_params, mcmc_params, gaussian_proposal_generator, num_trials=20, save_path='results/nn_gaussian_results.pkl')

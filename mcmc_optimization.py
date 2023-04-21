@@ -2,7 +2,8 @@ import numpy as np
 from typing import Tuple, Dict
 
 def optimize_via_mcmc(model, initial_params, data_sampler, proposal_generator, loss_function,
-                      beta: float = 0.5, num_iterations: int = 5000, batch_size: int = 25,regularize: bool = False, alpha: float = 2) -> Tuple[Dict, Dict]:
+                      beta: float = 0.5, num_iterations: int = 5000, batch_size: int = 25,
+                      regularize: bool = False, alpha: float = 2) -> Tuple[Dict, Dict]:
     """Use MCMC sampling to sample from likely optimizers of a loss surface.
     
     Args:
@@ -14,6 +15,8 @@ def optimize_via_mcmc(model, initial_params, data_sampler, proposal_generator, l
         beta (float): Hyperparameter used to define MCMC acceptance probability
         num_iterations (int): Number of iterations to run MCMC sampling for
         batch_size (int): Number of data points to return from data_sampler
+        regularize (bool): Specifies whether/not to regularize proposed weights
+        alpha (float): Coefficient defining how steeply to regularize model weights
 
     Returns:
         best_params (dict): Best computed set of parameters
