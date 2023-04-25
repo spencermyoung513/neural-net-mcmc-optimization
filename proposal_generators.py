@@ -20,7 +20,7 @@ class LinearLayerGaussianProposalGenerator:
         self.scale *= self.decay
 
         proposed_w = np.random.normal(loc=model.w, scale=self.scale)
-        proposed_b = np.random.normal(loc=model.b, scale=self.scale)
+        proposed_b = np.random.normal(loc=model.b, scale=self.scale+2)
 
         return {'w': proposed_w, 'b': proposed_b}
     
